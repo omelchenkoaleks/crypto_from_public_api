@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:crypto_from_public_api/feature/crypto_list/view/crypto_card.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class CryptoListScreen extends StatelessWidget {
   const CryptoListScreen({super.key});
 

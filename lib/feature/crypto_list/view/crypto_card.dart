@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:crypto_from_public_api/router/router.gr.dart';
 import 'package:flutter/material.dart';
 
 class CryptoCard extends StatelessWidget {
@@ -8,7 +10,7 @@ class CryptoCard extends StatelessWidget {
     return ListTile(
       title: const Text('Text'),
       onTap: () {
-        Navigator.of(context).pushNamed('/coinDetail');
+        context.router.push(const CoinDetailRoute());
       },
     );
   }

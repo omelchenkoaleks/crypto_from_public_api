@@ -1,7 +1,16 @@
-import 'package:crypto_from_public_api/feature/coin_detail/coin_detail_screen.dart';
-import 'package:crypto_from_public_api/feature/crypto_list/crypto_list_screen.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:crypto_from_public_api/router/router.gr.dart';
 
-final routers = {
-  '/': (context) => const CryptoListScreen(),
-  '/coinDetail': (context) => const CoinDetailScreen(),
-};
+// final routers = {
+//   '/': (context) => const CryptoListScreen(),
+//   '/coinDetail': (context) => const CoinDetailScreen(),
+// };
+
+@AutoRouterConfig()
+class AppRouter extends RootStackRouter {
+  @override
+  List<AutoRoute> get routes => [
+        AutoRoute(page: CryptoListRoute.page, path: '/'),
+        AutoRoute(page: CoinDetailRoute.page),
+      ];
+}

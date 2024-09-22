@@ -4,18 +4,20 @@ import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 class CryptoApp extends StatelessWidget {
-  const CryptoApp({super.key});
+  CryptoApp({super.key});
+  final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      routes: routers,
-      navigatorObservers: [
-        TalkerRouteObserver(
-          GetIt.I<Talker>(),
-        ),
-      ],
+      routerConfig: _appRouter.config(
+        navigatorObservers: () => [
+          TalkerRouteObserver(
+            GetIt.I<Talker>(),
+          ),
+        ],
+      ),
     );
   }
 }

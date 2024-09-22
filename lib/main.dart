@@ -8,5 +8,5 @@ void main() {
   GetIt.I.registerSingleton(talker);
   GetIt.I<Talker>().debug('Talker started...');
 
-  runApp(const CryptoApp());
+  runApp(CryptoApp());
 }
