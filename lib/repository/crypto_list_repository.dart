@@ -10,16 +10,17 @@ class CryptoListRepository {
     const url = 'https://min-api.cryptocompare.com/data/all/coinlist';
 
     try {
+      GetIt.I<Talker>().info('Fetching crypto list from: $url');
+
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> json = jsonDecode(response.body);
         final Map<String, dynamic> data = json['Data'];
-        final List<CryptoCurrency> cryptoList = [];
 
-        data.forEach((key, value) {
-          cryptoList.add(CryptoCurrency.fromJson(value));
-        });
+        final cryptoList = data.values
+            .map((cryptoData) => CryptoCurrency.fromJson(cryptoData))
+            .toList();
 
         return cryptoList;
       } else {
@@ -29,8 +30,8 @@ class CryptoListRepository {
             'Failed to load crypto currencies in getFullCryptoListCurrencies()! Status code: ${response.statusCode}');
       }
     } catch (e) {
-      GetIt.I<Talker>().error('Error in getFullCryptoListCurrencies(): $e');
-      throw Exception('Failed to load crypto currencies due to error: $e');
+      GetIt.I<Talker>().error('Error during crypto list fetch: $e');
+      throw Exception('Failed to load crypto currencies: $e');
     }
   }
 }
