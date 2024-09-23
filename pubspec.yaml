@@ -12,6 +12,7 @@ dependencies:
   talker_flutter: ^4.4.1
   get_it: ^8.0.0
   auto_route: ^9.2.2
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:
