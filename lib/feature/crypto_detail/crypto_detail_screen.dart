@@ -14,14 +14,7 @@ Future<CryptoDetail> fetchCryptoDetails(String symbol) async {
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> json = jsonDecode(response.body);
-    final coinData = json['RAW'][symbol]['USD'];
-
-    return CryptoDetail(
-      name: coinData['FROMSYMBOL'],
-      symbol: symbol,
-      imageUrl: 'https://www.cryptocompare.com${coinData['IMAGEURL']}',
-      price: coinData['PRICE'].toDouble(),
-    );
+    return CryptoDetail.fromJson(symbol, json['RAW']);
   } else {
     throw Exception('Не удалось загрузить данные о валюте');
   }
@@ -70,13 +63,14 @@ class _CryptoDetailScreenState extends State<CryptoDetailScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Ошибка: ${snapshot.error}'),
+                  Text(
+                      'No currency pair with USD for: ${widget.cryptoCurrency.symbol} in USD!\nGo to the website to learn more about currency.'),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
                       _launchURL(widget.cryptoCurrency.url);
                     },
-                    child: const Text('Перейти на сайт'),
+                    child: Text('Go to the website'.toUpperCase()),
                   ),
                 ],
               ),
@@ -93,7 +87,7 @@ class _CryptoDetailScreenState extends State<CryptoDetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.network(
-                        crypto.imageUrl,
+                        widget.cryptoCurrency.imageUrl,
                         width: 100,
                         height: 100,
                         errorBuilder: (context, error, stackTrace) {
@@ -107,7 +101,7 @@ class _CryptoDetailScreenState extends State<CryptoDetailScreen> {
                       Text('Symbol: ${crypto.symbol}',
                           style: Theme.of(context).textTheme.titleMedium),
                       const SizedBox(height: 8),
-                      Text('Price: \$${crypto.price.toStringAsFixed(2)}',
+                      Text('Price: \$${crypto.priceInUSD.toStringAsFixed(2)}',
                           style: Theme.of(context).textTheme.titleLarge),
                       const SizedBox(height: 8),
                       Text('Symbol: ${widget.cryptoCurrency.description}',

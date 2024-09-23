@@ -1,27 +1,43 @@
 class CryptoDetail {
-  final String name;
   final String symbol;
-  final String imageUrl;
-  final double price;
+  final double priceInUSD;
+  final double openDay;
+  final double highPriceLastHour;
+  final double lowPriceLastHour;
+  final double highPricePerDay;
+  final double lowPricePerDay;
+  final double percentagePriceHour;
+  final double percentagePriceDay;
 
   CryptoDetail({
-    required this.name,
     required this.symbol,
-    required this.imageUrl,
-    required this.price,
+    required this.priceInUSD,
+    required this.openDay,
+    required this.highPriceLastHour,
+    required this.lowPriceLastHour,
+    required this.highPricePerDay,
+    required this.lowPricePerDay,
+    required this.percentagePriceHour,
+    required this.percentagePriceDay,
   });
 
   factory CryptoDetail.fromJson(String symbol, Map<String, dynamic> json) {
     if (json[symbol] != null && json[symbol]['USD'] != null) {
       final coinData = json[symbol]['USD'];
       return CryptoDetail(
-        name: coinData['FROMSYMBOL'],
         symbol: symbol,
-        imageUrl: 'https://www.cryptocompare.com${coinData['IMAGEURL']}',
-        price: coinData['PRICE'].toDouble(),
+        priceInUSD: coinData['PRICE'].toDouble(),
+        openDay: coinData['OPENDAY'].toDouble(),
+        highPriceLastHour: coinData['HIGHHOUR'].toDouble(),
+        lowPriceLastHour: coinData['LOWHOUR'].toDouble(),
+        highPricePerDay: coinData['HIGHDAY'].toDouble(),
+        lowPricePerDay: coinData['LOWDAY'].toDouble(),
+        percentagePriceHour: coinData['CHANGEPCTHOUR'].toDouble(),
+        percentagePriceDay: coinData['CHANGEPCTDAY'].toDouble(),
       );
     } else {
-      throw Exception('Данные для символа $symbol в USD не найдены');
+      print('Received JSON: $json');
+      throw Exception('Data for symbol $symbol in USD not found');
     }
   }
 }
