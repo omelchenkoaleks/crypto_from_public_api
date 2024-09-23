@@ -9,6 +9,11 @@ class CryptoCurrency {
     required this.imageUrl,
   });
 
+  CryptoCurrency.empty()
+      : symbol = '',
+        name = '',
+        imageUrl = '';
+
   factory CryptoCurrency.fromJson(Map<String, dynamic> json) {
     return CryptoCurrency(
       symbol: json['Symbol'],

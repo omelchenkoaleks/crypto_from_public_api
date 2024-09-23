@@ -1,89 +1,60 @@
-import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:crypto_from_public_api/feature/crypto_list/model/crypto_currency.dart';
+import 'package:crypto_from_public_api/feature/crypto_list/cubit/crypto_list_cubit.dart';
+import 'package:crypto_from_public_api/feature/crypto_list/cubit/crypto_list_state.dart';
 import 'package:crypto_from_public_api/router/router.gr.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
-class CryptoListScreen extends StatefulWidget {
+class CryptoListScreen extends StatelessWidget {
   const CryptoListScreen({super.key});
-
-  @override
-  State<CryptoListScreen> createState() => _CryptoListScreenState();
-}
-
-class _CryptoListScreenState extends State<CryptoListScreen> {
-  late Future<List<CryptoCurrency>> cryptoList;
-
-  @override
-  void initState() {
-    super.initState();
-    cryptoList = fetchCryptoCurrencies();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Crypto List')),
-      body: FutureBuilder<List<CryptoCurrency>>(
-        future: cryptoList,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+      appBar: AppBar(
+        title: const Text('Crypto List'),
+        centerTitle: true,
+      ),
+      body: BlocBuilder<CryptoListCubit, CryptoListState>(
+        builder: (context, state) {
+          if (state.isLoading && state.cryptoCurrencies.isEmpty) {
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Ошибка: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('Список пуст'));
-          } else {
-            final cryptos = snapshot.data!;
-            return ListView.builder(
-              itemCount: cryptos.length,
-              itemBuilder: (context, index) {
-                final crypto = cryptos[index];
+          }
+
+          if (state.cryptoCurrencies.isEmpty) {
+            return const Center(child: Text('No crypto currencies available'));
+          }
+
+          return Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+            child: ListView.builder(
+              itemCount: state.cryptoCurrencies.length,
+              itemBuilder: (context, item) {
+                final cryptoCurrency = state.cryptoCurrencies[item];
                 return ListTile(
                   leading: Image.network(
-                    crypto.imageUrl,
+                    cryptoCurrency.imageUrl,
                     width: 40,
                     height: 40,
                     errorBuilder: (context, error, stackTrace) {
                       return const Icon(Icons.error);
                     },
                   ),
-                  title: Text(crypto.name),
-                  subtitle: Text(crypto.symbol),
+                  title: Text(cryptoCurrency.name),
+                  subtitle: Text(cryptoCurrency.symbol),
+                  trailing: const Icon(Icons.arrow_forward),
                   onTap: () {
-                    context.router
-                        .push(CryptoDetailRoute(symbol: crypto.symbol));
+                    context.router.push(
+                      CryptoDetailRoute(symbol: cryptoCurrency.symbol),
+                    );
                   },
                 );
               },
-            );
-          }
+            ),
+          );
         },
       ),
     );
-  }
-}
-
-Future<List<CryptoCurrency>> fetchCryptoCurrencies() async {
-  const url = 'https://min-api.cryptocompare.com/data/all/coinlist';
-
-  final response = await http.get(Uri.parse(url));
-
-  if (response.statusCode == 200) {
-    final Map<String, dynamic> json = jsonDecode(response.body);
-
-    final Map<String, dynamic> data = json['Data'];
-    final List<CryptoCurrency> cryptoList = [];
-
-    data.forEach((key, value) {
-      cryptoList.add(CryptoCurrency.fromJson(value));
-    });
-
-    return cryptoList;
-  } else {
-    throw Exception('Не удалось загрузить список валют');
   }
 }
