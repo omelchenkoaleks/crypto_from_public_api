@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:crypto_from_public_api/model/crypto_currency.dart';
+import 'package:crypto_from_public_api/feature/crypto_list/model/crypto_currency.dart';
+import 'package:crypto_from_public_api/router/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -52,6 +53,10 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                   ),
                   title: Text(crypto.name),
                   subtitle: Text(crypto.symbol),
+                  onTap: () {
+                    context.router
+                        .push(CryptoDetailRoute(symbol: crypto.symbol));
+                  },
                 );
               },
             );
