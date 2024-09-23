@@ -13,6 +13,8 @@ import 'package:crypto_from_public_api/feature/crypto_detail/crypto_detail_scree
     as _i1;
 import 'package:crypto_from_public_api/feature/crypto_list/crypto_list_screen.dart'
     as _i2;
+import 'package:crypto_from_public_api/feature/crypto_list/model/crypto_currency.dart'
+    as _i5;
 import 'package:flutter/material.dart' as _i4;
 
 /// generated route for
@@ -20,13 +22,13 @@ import 'package:flutter/material.dart' as _i4;
 class CryptoDetailRoute extends _i3.PageRouteInfo<CryptoDetailRouteArgs> {
   CryptoDetailRoute({
     _i4.Key? key,
-    required String symbol,
+    required _i5.CryptoCurrency cryptoCurrency,
     List<_i3.PageRouteInfo>? children,
   }) : super(
           CryptoDetailRoute.name,
           args: CryptoDetailRouteArgs(
             key: key,
-            symbol: symbol,
+            cryptoCurrency: cryptoCurrency,
           ),
           initialChildren: children,
         );
@@ -39,7 +41,7 @@ class CryptoDetailRoute extends _i3.PageRouteInfo<CryptoDetailRouteArgs> {
       final args = data.argsAs<CryptoDetailRouteArgs>();
       return _i1.CryptoDetailScreen(
         key: args.key,
-        symbol: args.symbol,
+        cryptoCurrency: args.cryptoCurrency,
       );
     },
   );
@@ -48,16 +50,16 @@ class CryptoDetailRoute extends _i3.PageRouteInfo<CryptoDetailRouteArgs> {
 class CryptoDetailRouteArgs {
   const CryptoDetailRouteArgs({
     this.key,
-    required this.symbol,
+    required this.cryptoCurrency,
   });
 
   final _i4.Key? key;
 
-  final String symbol;
+  final _i5.CryptoCurrency cryptoCurrency;
 
   @override
   String toString() {
-    return 'CryptoDetailRouteArgs{key: $key, symbol: $symbol}';
+    return 'CryptoDetailRouteArgs{key: $key, cryptoCurrency: $cryptoCurrency}';
   }
 }
 

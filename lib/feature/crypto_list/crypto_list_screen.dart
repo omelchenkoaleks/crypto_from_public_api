@@ -46,7 +46,7 @@ class CryptoListScreen extends StatelessWidget {
                   trailing: const Icon(Icons.arrow_forward),
                   onTap: () {
                     context.router.push(
-                      CryptoDetailRoute(symbol: cryptoCurrency.symbol),
+                      CryptoDetailRoute(cryptoCurrency: cryptoCurrency),
                     );
                   },
                 );
