@@ -1,3 +1,4 @@
+import 'package:crypto_from_public_api/feature/crypto_detail/cubit/crypto_detail_cubit.dart';
 import 'package:crypto_from_public_api/feature/crypto_list/cubit/crypto_list_cubit.dart';
 import 'package:crypto_from_public_api/router/router.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,9 @@ class CryptoApp extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               CryptoListCubit()..fetchFullCryptoListCurrencies(),
+        ),
+        BlocProvider(
+          create: (context) => CryptoDetailCubit(),
         ),
       ],
       child: MaterialApp.router(
