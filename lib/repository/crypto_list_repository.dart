@@ -10,7 +10,7 @@ class CryptoListRepository {
     const url = 'https://min-api.cryptocompare.com/data/all/coinlist';
 
     try {
-      GetIt.I<Talker>().info('Fetching crypto list from: $url');
+      GetIt.I<Talker>().debug('Fetching crypto list from: $url');
 
       final response = await http.get(Uri.parse(url));
 
