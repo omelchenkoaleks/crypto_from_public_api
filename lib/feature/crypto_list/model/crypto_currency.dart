@@ -1,4 +1,6 @@
 class CryptoCurrency {
+  static const String _baseUrl = 'https://www.cryptocompare.com';
+
   final String symbol;
   final String name;
   final String imageUrl;
@@ -22,11 +24,19 @@ class CryptoCurrency {
 
   factory CryptoCurrency.fromJson(Map<String, dynamic> json) {
     return CryptoCurrency(
-      symbol: json['Symbol'],
-      name: json['CoinName'],
-      imageUrl: 'https://www.cryptocompare.com${json['ImageUrl']}',
-      description: json['Description'],
-      url: 'https://www.cryptocompare.com${json['Url']}',
+      symbol: json['Symbol'] ?? '',
+      name: json['CoinName'] ?? '',
+      imageUrl: _buildImageUrl(json['ImageUrl']),
+      description: json['Description'] ?? '',
+      url: _buildUrlVisitWebsite(json['Url']),
     );
+  }
+
+  static String _buildImageUrl(String? imageUrl) {
+    return imageUrl != null ? '$_baseUrl$imageUrl' : '';
+  }
+
+  static String _buildUrlVisitWebsite(String? url) {
+    return url != null ? '$_baseUrl$url' : '';
   }
 }
